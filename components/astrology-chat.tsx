@@ -1,6 +1,7 @@
 "use client"
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { ArrowLeft, Send, User, Bot } from "lucide-react"
+import { ArrowLeft, Send, User, Bot, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -25,6 +26,7 @@ interface AstrologyChatProps {
 
 export default function AstrologyChat({ userData, onBack, language }: AstrologyChatProps) {
   const router = useRouter()
+  const [chatError, setChatError] = useState<string | null>(null)
 
   const text = {
     hindi: {
@@ -63,6 +65,7 @@ export default function AstrologyChat({ userData, onBack, language }: AstrologyC
     },
     onError: (error) => {
       console.error("Chat error:", error)
+      setChatError(error.message || "Something went wrong. Please try again.")
     },
   })
 
@@ -154,6 +157,20 @@ export default function AstrologyChat({ userData, onBack, language }: AstrologyC
             </CardHeader>
 
             <CardContent className="flex-1 flex flex-col">
+              {/* Error Banner */}
+              {chatError && (
+                <div className="flex items-center justify-between bg-red-500/20 border border-red-400/40 text-red-200 text-sm rounded-lg px-4 py-2 mb-3">
+                  <span>{chatError}</span>
+                  <button
+                    onClick={() => setChatError(null)}
+                    className="ml-3 text-red-300 hover:text-white shrink-0"
+                    aria-label="Dismiss error"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
                 {messages.map((message) => (

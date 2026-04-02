@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
       imageType: image?.substring(0, 30),
       language,
       landmarksCount: landmarks?.length,
-      apiKeyExists: !!process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-      apiKeyLength: process.env.GOOGLE_GENERATIVE_AI_API_KEY?.length,
     })
 
     // Check if we have an image
@@ -76,7 +74,6 @@ Provide a detailed, uplifting analysis in 150-200 words focusing on strengths an
 `
 
     console.log("🚀 Calling Gemini Vision API...")
-    console.log("🔑 API Key first 10 chars:", process.env.GOOGLE_GENERATIVE_AI_API_KEY?.substring(0, 10))
 
     try {
       const { text } = await generateText({

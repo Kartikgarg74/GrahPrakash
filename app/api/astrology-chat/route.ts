@@ -192,6 +192,20 @@ export async function POST(req: Request) {
   try {
     const { messages, userData } = await req.json()
 
+    // Input validation
+    if (!userData || typeof userData !== "object") {
+      return new Response("Invalid request: userData is required", { status: 400 })
+    }
+    if (!userData.name || typeof userData.name !== "string" || userData.name.trim().length === 0 || userData.name.length > 100) {
+      return new Response("Invalid request: name must be a non-empty string (max 100 chars)", { status: 400 })
+    }
+    if (!userData.birthDate || typeof userData.birthDate !== "string" || userData.birthDate.trim().length === 0 || userData.birthDate.length > 20) {
+      return new Response("Invalid request: birthDate must be a non-empty string (max 20 chars)", { status: 400 })
+    }
+    if (!messages || !Array.isArray(messages)) {
+      return new Response("Invalid request: messages must be an array", { status: 400 })
+    }
+
     // Get language from URL params
     const url = new URL(req.url)
     const language = url.searchParams.get("lang") || "english"
@@ -279,7 +293,7 @@ Instructions:
 `
 
     const result = await streamText({
-      model: google("gemini-2.0-flash-exp", {
+      model: google(process.env.GOOGLE_MODEL || "gemini-2.0-flash", {
         apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
       }),
       messages: [
