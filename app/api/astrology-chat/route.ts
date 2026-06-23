@@ -222,7 +222,7 @@ export async function POST(req: Request) {
     const lon = userData.longitude || coordinates.lng
 
     // Generate real birth chart
-    const chartData = calculator.generateBirthChart(birthDate, userData.birthTime, userData.birthPlace, lat, lon)
+    const chartData = calculator.generateBirthChart(birthDate, lat, lon)
 
     // Create comprehensive astrological context
     const astrologyContext =

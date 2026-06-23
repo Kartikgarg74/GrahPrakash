@@ -293,7 +293,7 @@ export class VedicAstrologyCalculator {
     }
   }
 
-  generateBirthChart(birthDate: Date, birthTime: string, location: string, lat: number, lon: number): ChartData {
+  generateBirthChart(birthDate: Date, lat: number, lon: number): ChartData {
     try {
       const planets = this.calculatePlanetaryPositions(birthDate, lat, lon)
       const ascendant = this.calculateAscendant(birthDate, lat, lon)
